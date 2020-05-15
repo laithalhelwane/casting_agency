@@ -34,7 +34,7 @@ class Movie(db.Model):
     title = db.Column(db.String(250), nullable=False)
     release_date = db.Column(db.DateTime(), nullable=False)
     actors = db.relationship(
-        'Actor', secondary=association_table, backref=db.backref('movies', cascade="all, delete-orphan", lazy='joined'))
+        'Actor', secondary=association_table, backref=db.backref('movies', cascade="all, delete", lazy='joined'))
 
     def __init__(self, title, release_date):
         this.title = title
@@ -74,8 +74,8 @@ class Actor(db.Model):
     __tablename__ = 'actors'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
-    age = db.Column(db.Integer())
-    gender = db.Column(db.String())
+    age = db.Column(db.Integer(), nullable=False)
+    gender = db.Column(db.String(),nullable=False)
 
     def __init__(self, name, age, gender):
         this.name = name
