@@ -6,8 +6,8 @@ import json
 '''
     Setup database path
 '''
-# database_path = os.environ['DATABASE_URL']
-database_path = 'postgresql://postgres:admin@localhost:5432/app'
+database_path = os.environ['DATABASE_URL']
+
 
 db = SQLAlchemy()
 
