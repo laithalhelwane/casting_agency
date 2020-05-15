@@ -43,7 +43,7 @@ class Movie(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def add_actors(self, actor):
+    def add_actor(self, actor):
         if actor not in self.actors:
             self.actors.append(actor)
         self.update()
@@ -51,6 +51,7 @@ class Movie(db.Model):
     def delete_actor(self, actor):
         if actor in self.actors:
             self.actors.remove(actor)
+        self.update()
 
     def get_actors(self):
         actors_list = []
@@ -94,10 +95,12 @@ class Actor(db.Model):
     def add_movie(self, movie):
         if movie not in self.movies:
             self.movies.append(movie)
+        self.update()
 
     def delete_movie(self, movie):
         if movie in self.movies:
             self.movies.remove(movie)
+        self.update()
 
     def get_movies(self):
         movies_list = []
