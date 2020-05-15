@@ -37,8 +37,8 @@ class Movie(db.Model):
         'Actor', secondary=association_table, backref=db.backref('movies', cascade="all, delete", lazy='joined'))
 
     def __init__(self, title, release_date):
-        this.title = title
-        this.release_date = release_date
+        self.title = title
+        self.release_date = release_date
 
     def insert(self):
         db.session.add(self)
@@ -78,9 +78,9 @@ class Actor(db.Model):
     gender = db.Column(db.String(),nullable=False)
 
     def __init__(self, name, age, gender):
-        this.name = name
-        this.age = age
-        this.gender = gender
+        self.name = name
+        self.age = age
+        self.gender = gender
 
     def add_movies(self, movies_list):
         for movie in movies_list:
