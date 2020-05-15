@@ -208,6 +208,7 @@ def create_app(test_config=None):
             })
         except Exception:
             abort(422)
+
     @app.route('/assign', methods=['DELETE'])
     def unassign_actor():
         body = request.get_json()
@@ -227,6 +228,30 @@ def create_app(test_config=None):
             })
         except Exception:
             abort(422)
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "unprocessable"
+        }), 422
+
+    @app.errorhandler(404)
+    def notfound(error):
+        return jsonify({
+            'success': False,
+            'error': 404,
+            'message': 'not found',
+        }), 404
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            'success': False,
+            'error': 401,
+            'message': 'Bad request',
+        }), 401
     return app
 
 
