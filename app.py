@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db, Actor, Movie, association_table, db
+from .auth.auth import AuthError, requires_auth
 
 
 def is_none(*request_body):
@@ -29,7 +30,8 @@ def create_app(test_config=None):
     # ----Actors-----
 
     @app.route('/actors', methods=['GET'])
-    def get_actors():
+    @app.requires_auth('get:actors')
+    def get_actors(token):
         try:
             actors = Actor.query.all()
             data = []
@@ -47,7 +49,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors/<int:id>', methods=['GET'])
-    def get_actor(id):
+    @app.requires_auth('get:actors')
+    def get_actor(token, id=id):
         actor = Actor.query.filter(Actor.id == id).one_or_none()
         if is_none(actor):
             abort(404)
@@ -58,7 +61,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/actors/<int:id>', methods=['DELETE'])
-    def delete_actor(id):
+    @app.requires_auth('delete:actor')
+    def delete_actor(token, id=id):
         actor = Actor.query.filter(Actor.id == id).one_or_none()
         if is_none(actor):
             abort(404)
@@ -72,7 +76,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors', methods=['POST'])
-    def add_actor():
+    @app.requires_auth('add:actor')
+    def add_actor(token):
         body = request.get_json()
         if is_none(body.get('name'), body.get('age'), body.get('gender')):
             abort(400)
@@ -88,7 +93,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/actors/<int:id>', methods=['PATCH'])
-    def edit_actor_data(id):
+    @app.requires_auth('edit:actor')
+    def edit_actor_data(token, id=id):
         actor = Actor.query.filter(Actor.id == id).one_or_none()
         if actor is None:
             abort(404)
@@ -111,7 +117,8 @@ def create_app(test_config=None):
     # ----- Movies -----
 
     @app.route('/movies', methods=['GET'])
-    def get_movies():
+    @app.requires_auth('get:movies')
+    def get_movies(token):
         try:
             movies = Movie.query.all()
             data = []
@@ -128,7 +135,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies/<int:id>', methods=['GET'])
-    def get_movie(id):
+    @app.requires_auth('get:movies')
+    def get_movie(token, id=id):
         movie = Movie.query.filter(Movie.id == id).one_or_none()
         if is_none(movie):
             abort(404)
@@ -139,7 +147,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/movies/<int:id>', methods=['DELETE'])
-    def delete_movie(id):
+    @app.requires_auth('delete:movie')
+    def delete_movie(token, id=id):
         movie = Movie.query.filter(Movie.id == id).one_or_none()
         if is_none(movie):
             abort(404)
@@ -153,7 +162,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies', methods=['POST'])
-    def add_movie():
+    @app.requires_auth('add:movie')
+    def add_movie(token):
         body = request.get_json()
         if is_none(body.get('title'), body.get('release_date')):
             abort(400)  # bad request
@@ -171,7 +181,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies/<int:id>', methods=['PATCH'])
-    def edit_movie_data(id):
+    @app.requires_auth('edit:movie')
+    def edit_movie_data(token, id=id):
         movie = Movie.query.filter(Movie.id == id).one_or_none()
         if is_none(movie):
             abort(404)
@@ -190,7 +201,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/assign', methods=['POST'])
-    def assign_actor():
+    @app.requires_auth('edit:movie')
+    def assign_actor(token):
         body = request.get_json()
         if is_none(body.get('actor_id'), body.get('movie_id')):
             abort(400)
@@ -210,7 +222,8 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/assign', methods=['DELETE'])
-    def unassign_actor():
+    @app.requires_auth('edit:movie')
+    def unassign_actor(token):
         body = request.get_json()
         if is_none(body.get('actor_id'), body.get('movie_id')):
             abort(400)
@@ -252,6 +265,15 @@ def create_app(test_config=None):
             'error': 401,
             'message': 'Bad request',
         }), 401
+
+    @app.errorhandler(AuthError)
+    def unauthorized(error):
+        return jsonify({
+            'success': False,
+            'error': 401,
+            'message': error.error['description'],
+        }), 401
+
     return app
 
 
