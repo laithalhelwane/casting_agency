@@ -48,7 +48,9 @@ class Movie(db.Model):
 
     # Create relationship between movie and actor
     actors = db.relationship(
-        'Actor', secondary=association_table, backref=db.backref('movies', cascade="all, delete", lazy='joined'))
+        'Actor',
+        secondary=association_table,
+        backref=db.backref('movies', cascade="all, delete", lazy='joined'))
 
     # Movie Constructor
     def __init__(self, title, release_date):
@@ -92,7 +94,7 @@ class Movie(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    # Return Movie information in JSON format 
+    # Return Movie information in JSON format
     def format(self):
         return {
             'id': self.id,
@@ -131,7 +133,9 @@ class Actor(db.Model):
         if movie not in self.movies:
             self.movies.append(movie)
         self.update()
+
     # Delete the relationship between movie and actor
+
     def delete_movie(self, movie):
         if movie in self.movies:
             self.movies.remove(movie)
@@ -152,7 +156,7 @@ class Actor(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
-    
+
     # Update Actor
     def update(self):
         db.session.commit()
@@ -162,7 +166,7 @@ class Actor(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    # Return Actor information in JSON format 
+    # Return Actor information in JSON format
     def format(self):
         return {
             'id': self.id,
