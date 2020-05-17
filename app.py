@@ -116,7 +116,7 @@ def create_app(test_config=None):
                 body.get('age'),
                 body.get('gender')):
 
-            abort(404)  # bad request
+            abort(401)  # bad request
 
         try:
             '''
@@ -257,7 +257,7 @@ def create_app(test_config=None):
                 body.get('title'),
                 body.get('release_date')
         ):
-            abort(404)  # bad request  # bad request
+             abort(401)  # bad request  # bad request
         try:
             '''
                 Create new Movie
@@ -328,7 +328,7 @@ def create_app(test_config=None):
             body.get('actor_id'),
             body.get('movie_id')
         ):
-            abort(404)  # bad request
+             abort(401)  # bad request
 
         actor_id = body.get('actor_id')
         movie_id = body.get('movie_id')
@@ -372,7 +372,7 @@ def create_app(test_config=None):
             body.get('actor_id'),
             body.get('movie_id')
         ):
-            abort(404)  # bad request
+             abort(401)  # bad request
 
         actor_id = body.get('actor_id')
         movie_id = body.get('movie_id')
