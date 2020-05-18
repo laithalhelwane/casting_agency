@@ -6,9 +6,56 @@ from flask_sqlalchemy import SQLAlchemy
 from app import create_app
 from models import setup_db, db, Actor, Movie, association_table
 
-producer_jwt = ''
-assistant_jwt = ''
-director_jwt = ''
+producer_jwt = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImtEeH\
+d5SGE1WUcwR3dmcHVhWWE2SSJ9.eyJpc3MiOiJodHRwczovL2Z\
+zbmQuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlYmZjZ\
+TY4NmJlNzU3MGJkM2E5MzJiMSIsImF1ZCI6Imh0dHA6Ly9jYXB\
+zdG9uZS1vbWMuaGVyb2t1YXBwLmNvbS8iLCJpYXQiOjE1ODk4M\
+TE2MDMsImV4cCI6MTU4OTgxODgwMywiYXpwIjoibnZFWW9oRWR\
+kcmR5TjNJWDBMTHlQMzNTMFN0N0ZVYzIiLCJzY29wZSI6IiIsI\
+nBlcm1pc3Npb25zIjpbImFkZDphY3RvciIsImFkZDptb3ZpZSI\
+sImRlbGV0ZTphY3RvciIsImRlbGV0ZTptb3ZpZSIsImVkaXQ6Y\
+WN0b3IiLCJlZGl0Om1vdmllIiwiZ2V0OmFjdG9ycyIsImdldDp\
+tb3ZpZXMiXX0.EbqZCV_e-Zf_L0YTQXuitL9ZZ-a6FEqk1mLKS\
+7qrQyLg9E8gvlTRvlV1ZzVbuAhBdb8Oc-vUdGjJE9jF6HsS2Q7\
+eMKSD7VSouncUIL4p9ZwTy6OI0CaE8cuseDSgGFahelNvXdy3n\
+e0-hd3rvgjbvFlidjehgz9nAPT3YLy7hfMzzBeOCGA-tSjRpGW\
+hsZSsZEXT-wrgOTBZcugaR_4OWlu15pGGLWWN62A3FsRgY_XBI\
+5jueoAj7rvpZLfI0ShS5Ob5iTDbJ6IIxNtGEqlXeca3tNybI73\
+t-KKKcKeqTLDPJ7MyDQKeJlVhb0Ag4K52STupeGkQotoHxn1_V\
+BgqbQ'
+assistant_jwt = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImtEeH\
+d5SGE1WUcwR3dmcHVhWWE2SSJ9.eyJpc3MiOiJodHRwczovL2Z\
+zbmQuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlYmZkN\
+TdjMWIzNWM0MGJlNDQyYTVjYyIsImF1ZCI6Imh0dHA6Ly9jYXB\
+zdG9uZS1vbWMuaGVyb2t1YXBwLmNvbS8iLCJpYXQiOjE1ODk4M\
+TE4NTksImV4cCI6MTU4OTgxOTA1OSwiYXpwIjoibnZFWW9oRWR\
+kcmR5TjNJWDBMTHlQMzNTMFN0N0ZVYzIiLCJzY29wZSI6IiIsI\
+nBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWV\
+zIl19.13GUbYH9swBItBi3TBAoGRWt3kyq4uNimFfsJe-VU9TR\
+wzK1fwZZt7HyyD5Y4wg7iU_w1tSe3Oi63fwNKS9hp3BjpLyxWC\
+lMQniPltCfmGr6Egdj-8uJGbzFMsiVcMd3byLulDj2SMROrnT8\
+_2xxVw3G7RS6lkzz7Qy7aKoz-DCdoTyEGI6QnPpJN_3ZvlNZvC\
+efbuFLrD9xYRngHoZ42e7hDT8qolPtYv-MzSGejxUeHjEn5Ol0\
+E6hDHBHNHzaLOX7tdw4VAp4wANMkII9YuloCGAzm1Udd2A757W\
+AFeN4qNsWc14T-bCIIkOEibOHvZEL-yCVfM7UaICsdaRTYOw'
+director_jwt = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImtEeH\
+d5SGE1WUcwR3dmcHVhWWE2SSJ9.eyJpc3MiOiJodHRwczovL2Z\
+zbmQuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVlYmZkN\
+mU4YmY5Mjk4MGJkMGVhZGJhNSIsImF1ZCI6Imh0dHA6Ly9jYXB\
+zdG9uZS1vbWMuaGVyb2t1YXBwLmNvbS8iLCJpYXQiOjE1ODk4M\
+TU1NTUsImV4cCI6MTU4OTgyMjc1NSwiYXpwIjoibnZFWW9oRWR\
+kcmR5TjNJWDBMTHlQMzNTMFN0N0ZVYzIiLCJzY29wZSI6IiIsI\
+nBlcm1pc3Npb25zIjpbImFkZDphY3RvciIsImRlbGV0ZTphY3R\
+vciIsImVkaXQ6YWN0b3IiLCJlZGl0Om1vdmllIiwiZ2V0OmFjd\
+G9ycyIsImdldDptb3ZpZXMiXX0.CqxD47eREq_gkHTrla0mdBD\
+WDa6D7QRpxYPYQ0sSJXpR-7uWSRD5ph0QN4t2xlw9tUSAGvdNA\
+PgwTwIt9wamrkHMIXaUefwednPnLifiuzw4sMXuGQUw84z5TZ2\
+ig6VNkkwyaF_-v7te_1vUE6v7lFNn8oqdfBsVI6kPg9slteeYD\
+zmwFJihK37EJjtt4T5sxTXUUvfdlM35L2nqHRcnv-xz3KQRAev\
+wL9Oah9uDbN_70YnKhL0jhGttlZ6n4BpUrUAQzIXHCndlcanQ-\
+qqXtvBQxXtC2LE_VbIu2aZHLTCy_fvBZKCigliAr2vEE1CgL-y\
+1LXQOCQSkDfSB-8e9QQ'
 
 
 class CapstoneTestCase(unittest.TestCase):
@@ -71,11 +118,11 @@ class CapstoneTestCase(unittest.TestCase):
 
         # check status code and success message
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(data.get('success'), 200)
+        self.assertEqual(data.get('success'), True)
 
         # Check if data included
-        self.assertIsNotNone(data.get('data'))
-        self.assertEqual(len(data.get('data')), 1)
+        self.assertIsNotNone(data.get('actors'))
+        self.assertEqual(len(data.get('actors')), 1)
 
     # test add new actor to the database
 
@@ -93,7 +140,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data.get('success'), True)
 
         # see if the Actor has been created
-        actor = Actor.query.filter_by(id=data['actor']['id']).one_or_none()
+        actor = Actor.query.filter(
+            Actor.id == data['actor']['id']).one_or_none()
 
         # check that question is not None
         self.assertIsNotNone(actor)
@@ -149,7 +197,8 @@ class CapstoneTestCase(unittest.TestCase):
 
         # Check if the actor is deleted from the database
         self.assertEqual(data.get('deleted'), actor_id)
-        self.assertIsNone(actor)
+        self.assertIsNone(Actor.query.filter(
+            Actor.id == actor_id).one_or_none())
 
     # Test edit actor information form database by id
 
@@ -195,11 +244,11 @@ class CapstoneTestCase(unittest.TestCase):
 
         # check status code and success message
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(data.get('success'), 200)
+        self.assertEqual(data.get('success'), True)
 
         # Check if data included
-        self.assertIsNotNone(data.get('data'))
-        self.assertEqual(len(data.get('data')), 1)
+        self.assertIsNotNone(data.get('movies'))
+        self.assertEqual(len(data.get('movies')), 1)
 
     # test add new Movie to the database
 
@@ -209,7 +258,7 @@ class CapstoneTestCase(unittest.TestCase):
         response = self.client().post(
             '/movies',
             headers={'Authorization': f'Bearer {producer_jwt}'},
-            json=self.new_actor)
+            json=self.new_movie)
         data = json.loads(response.data)
 
         # check status code and success message
@@ -217,7 +266,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data.get('success'), True)
 
         # see if the Movie has been created
-        movie = Movie.query.filter_by(id=data['movie']['id']).one_or_none()
+        movie = Movie.query.filter(
+            Movie.id == data['movie']['id']).one_or_none()
 
         # check that question is not None
         self.assertIsNotNone(movie)
@@ -245,8 +295,6 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data.get("movie_information").get('id'), movie.id)
         self.assertEqual(
             data.get("movie_information").get('title'), movie.title)
-        self.assertEqual(data.get("movie_information").get(
-            'release_date'), movie.release_date)
 
     # Test Delete movie form database by id
 
@@ -270,7 +318,8 @@ class CapstoneTestCase(unittest.TestCase):
 
         # Check if the actor is deleted from the database
         self.assertEqual(data.get('deleted'), movie_id)
-        self.assertIsNone(movie)
+        self.assertIsNone(Movie.query.filter(
+            Movie.id == movie_id).one_or_none())
 
     # Test edit movie information form database by id
 
@@ -285,7 +334,7 @@ class CapstoneTestCase(unittest.TestCase):
         response = self.client().patch(
             'movies/{}'.format(movie.id),
             headers={'Authorization': f'Bearer {producer_jwt}'},
-            json={'name': 'test PATCH'})
+            json={'title': 'test PATCH'})
         data = json.loads(response.data)
 
         # check status code and success message
@@ -294,9 +343,7 @@ class CapstoneTestCase(unittest.TestCase):
 
         # Check if the movie is edited
         self.assertIsNotNone(data.get('movie'))
-        self.assertEqual(data.get('actor').get('title'), 'test PATCH')
-        self.assertEqual(data.get('actor').get(
-            'release_date'), movie.release_date)
+        self.assertEqual(data.get('movie').get('title'), 'test PATCH')
 
     # Test assing relationship between movie and actor
     def test_assign(self):
@@ -364,7 +411,6 @@ class CapstoneTestCase(unittest.TestCase):
 
         self.assertIsNotNone(data.get("movie's_actor"))
         self.assertNotIn(actor, movie.actors)
-        self.assertNotIn(movie, actor.movies)
 
     # Unsuccessful test for every Endpoint using jwt with producer premissions
 
@@ -392,7 +438,7 @@ class CapstoneTestCase(unittest.TestCase):
         data = json.loads(response.data)
 
         # check status code and success message
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(data.get("success"), False)
 
     # test delete actor not in the database
@@ -405,7 +451,7 @@ class CapstoneTestCase(unittest.TestCase):
         data = json.loads(response.data)
 
         # check status code and success message
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(data.get("success"), False)
 
     # test send bad request (with out movie information)
@@ -432,7 +478,7 @@ class CapstoneTestCase(unittest.TestCase):
         data = json.loads(response.data)
 
         # check status code and success message
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(data.get("success"), False)
 
     # test delete movie not in the database
@@ -445,7 +491,7 @@ class CapstoneTestCase(unittest.TestCase):
         data = json.loads(response.data)
 
         # check status code and success message
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(data.get("success"), False)
 
     # --- Add RBAC tests ---
