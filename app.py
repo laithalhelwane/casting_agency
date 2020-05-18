@@ -115,8 +115,7 @@ def create_app(test_config=None):
                 body.get('name'),
                 body.get('age'),
                 body.get('gender')):
-
-            abort(401)  # bad request
+                abort(401)  # bad request
 
         try:
             '''
@@ -255,9 +254,8 @@ def create_app(test_config=None):
 
         if is_none(
                 body.get('title'),
-                body.get('release_date')
-        ):
-            abort(401)  # bad request  # bad request
+                body.get('release_date')):
+                abort(401)  # bad request
         try:
             '''
                 Create new Movie
@@ -417,13 +415,21 @@ def create_app(test_config=None):
             'message': 'not found',
         }), 404
 
+    @app.errorhandler(401)
+    def notfound(error):
+        return jsonify({
+            'success': False,
+            'error': 401,
+            'message': 'Unauthorized',
+        }), 401
+
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
             'success': False,
-            'error': 401,
+            'error': 400,
             'message': 'Bad request',
-        }), 401
+        }), 400
 
     @app.errorhandler(AuthError)
     def unauthorized(error):
