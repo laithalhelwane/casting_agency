@@ -515,9 +515,9 @@ Response:
 }
 ```
 
-#### PATCH '/actor/id'
-- edit actor's information
-- Request Arguments: id (The actor's id)
+#### PATCH '/movie/id'
+- edit moview's information
+- Request Arguments: id (The movie's id)
 - Returns
 ```sh
 curl --location --request PATCH 'http://capstone-omc.herokuapp.com/movies/6' \
