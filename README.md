@@ -186,6 +186,8 @@ In file ```./users-password-jwt.txt``` there are users credentials, you can use 
 - POST 'assign'
 - DELETE 'assign'
 
+***All the test are using JWT with Executive Producer role.***
+
 ##### GET '/auth'
 - Redirect user to login page provided by auth0
 - This Endpoint to help the reviewer get the jwt
