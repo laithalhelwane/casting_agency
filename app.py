@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db, Actor, Movie, association_table, db
@@ -8,6 +8,9 @@ from auth.auth import AuthError, requires_auth
 '''
     return True if one of it's arguments is None
 '''
+AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
+API_AUDIENCE = os.environ['API_AUDIENCE']
+AUTH0_CLIENT_ID = os.environ['AUTH0_CLIENT_ID']
 
 
 def is_none(*args):
@@ -34,6 +37,24 @@ def create_app(test_config=None):
         return response
 
 
+# --- Auth Endpoints ---
+
+    '''
+        this Endpoint generate authentication url and redirect to it
+    '''
+    @app.route('/auth')
+    def generate_auth_url():
+        url = f'https://{AUTH0_DOMAIN}/authorize' \
+            f'?audience={API_AUDIENCE}' \
+            f'&response_type=token&client_id=' \
+            f'{AUTH0_CLIENT_ID}&redirect_uri=' \
+            f'https://capstone-omc.herokuapp.com/callback'
+
+        return redirect(url)
+
+    @app.route('/callback')
+    def message():
+        return jsonify({'message': 'Copy the access token from the URL'})
 # ---- Actor Endpoints ----
 
     '''
@@ -115,7 +136,7 @@ def create_app(test_config=None):
                 body.get('name'),
                 body.get('age'),
                 body.get('gender')):
-                abort(401)  # bad request
+            abort(401)  # bad request
 
         try:
             '''
@@ -255,7 +276,7 @@ def create_app(test_config=None):
         if is_none(
                 body.get('title'),
                 body.get('release_date')):
-                abort(401)  # bad request
+            abort(401)  # bad request
         try:
             '''
                 Create new Movie
