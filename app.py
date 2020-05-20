@@ -5,13 +5,14 @@ from flask_cors import CORS
 from models import setup_db, Actor, Movie, association_table, db
 from auth.auth import AuthError, requires_auth
 
-'''
-    return True if one of it's arguments is None
-'''
+
 AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
 API_AUDIENCE = os.environ['API_AUDIENCE']
 AUTH0_CLIENT_ID = os.environ['AUTH0_CLIENT_ID']
 
+'''
+    return True if one of it's arguments is None
+'''
 
 def is_none(*args):
     for arg in args:
