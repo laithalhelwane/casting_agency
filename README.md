@@ -125,7 +125,7 @@ Code Values and Error Messages:
 - 400: Bad request (some of the required data are missing)
 - 401: unauthorized
 - Errors are returned as JSON in the following format:
-``` json
+```json
 {
     'success': False,
     'error': 400,
@@ -186,7 +186,7 @@ In file ```./users-password-jwt.txt``` there are users credentials, you can use 
 - POST 'assign'
 - DELETE 'assign'
 
-***All the test are using JWT with Executive Producer role.***
+***All the tests are using JWT with Executive Producer role.***
 
 ##### GET '/auth'
 - Redirect user to login page provided by auth0
